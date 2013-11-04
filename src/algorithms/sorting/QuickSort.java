@@ -12,28 +12,28 @@ public class QuickSort {
    * @param input
    * @return
    */
-  public static List<? extends Comparable> quickSort(List<? extends Comparable> input) {
+  public static  <T extends Comparable<? super T>> List<T> quickSort(List<T> input) {
     if (input.size() == 0 || input.size() == 1) {
       return input;
     }
 
-    Comparable pivot = input.get((int) (Math.random() * input.size()));
-    List<Comparable> less = new ArrayList<Comparable>();
-    List<Comparable> greater = new ArrayList<Comparable>();
-    List<Comparable> pivotList = new ArrayList<Comparable>();
+    T pivot = input.get((int) (Math.random() * input.size()));
+    List<T> less = new ArrayList<T>();
+    List<T> greater = new ArrayList<T>();
+    List<T> pivotList = new ArrayList<T>();
 
-    for (Comparable c : input) {
-      int comparison = c.compareTo(pivot);
+    for (T entry : input) {
+      int comparison = entry.compareTo(pivot);
       if (comparison < 0) {
-        less.add(c);
+        less.add(entry);
       } else if (comparison > 0) {
-        greater.add(c);
+        greater.add(entry);
       } else {
-        pivotList.add(c);
+        pivotList.add(entry);
       }
     }
 
-    List<Comparable> result = (List<Comparable>) quickSort(less);
+    List<T> result = quickSort(less);
     result.addAll(pivotList);
     result.addAll(quickSort(greater));
     return result;

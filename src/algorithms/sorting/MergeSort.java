@@ -12,14 +12,14 @@ public class MergeSort {
    * @return - a sorted version of the input list. This is not performed in place and does not alter
    * input
    */
-  public static List<? extends Comparable> mergeSort(List<? extends Comparable> input) {
+  public static <T extends Comparable<? super T>> List<T> mergeSort(List<T> input) {
 
     if (input.size() == 1 || input.size() == 0) {
       return input;
     }
-    List<Comparable> left = new ArrayList<Comparable>(copyOfRange(input, 0, input.size() / 2));
-    List<Comparable> right =
-        new ArrayList<Comparable>(copyOfRange(input, input.size() / 2, input.size()));
+    List<T> left = new ArrayList<T>(copyOfRange(input, 0, input.size() / 2));
+    List<T> right =
+        new ArrayList<T>(copyOfRange(input, input.size() / 2, input.size()));
     return merge(mergeSort(left), mergeSort(right));
   }
 
@@ -27,11 +27,11 @@ public class MergeSort {
    * Takes two sorted lists and combines them into a single sorted list in linear time relative to
    * the sum of the sizes of the lists
    */
-  private static List<Comparable> merge(List<? extends Comparable> first,
-      List<? extends Comparable> second) {
+  private static <T extends Comparable<? super T>> List<T> merge(List<T> first,
+      List<T> second) {
     int firstIndex = 0;
     int secondIndex = 0;
-    List<Comparable> result = new ArrayList<Comparable>(first.size() + second.size());
+    List<T> result = new ArrayList<T>(first.size() + second.size());
     while (firstIndex < first.size() || secondIndex < second.size()) {
 
       /*
