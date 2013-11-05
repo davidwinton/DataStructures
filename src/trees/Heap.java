@@ -1,7 +1,6 @@
 package trees;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 /**
  * An implementation of the heap data structure.
@@ -24,7 +23,7 @@ public class Heap<KEY extends Comparable, VALUE> {
   public Heap(boolean isMaxHeap) {
     this.isMaxHeap = isMaxHeap;
     size = 0;
-    data = new HeapEntry[11];
+    data = new HeapEntry[DEFAULT_SIZE];
   }
 
   public Heap(HeapEntry<KEY, VALUE>[] input, boolean isMaxHeap) {
@@ -39,11 +38,8 @@ public class Heap<KEY extends Comparable, VALUE> {
       return;
     }
 
-    for (int i = size / 2; i > 0; i++) {
-      int candidateIndex = getBetterMatch(2 * i, (2 * i + 1));
-      if (getBetterMatch(i, candidateIndex) != i) { //have to swap
-        swap(i, candidateIndex);
-      }
+    for (int i = size / 2; i > 0; i--) {
+      percolateDown(i);
     }
   }
 
@@ -71,6 +67,10 @@ public class Heap<KEY extends Comparable, VALUE> {
   }
 
   private void percolateUp(int index) {
+    if(index == 0) {
+      return;
+    }
+
     int parent = index / 2;
 
     if (getBetterMatch(index, parent) == index) {
@@ -80,6 +80,10 @@ public class Heap<KEY extends Comparable, VALUE> {
   }
 
   private void percolateDown(int index) {
+    if(index > size / 2) {
+      return;
+    }
+
     int child = getBetterMatch(2 * index, 2 * index + 1);
     if (child != -1 && getBetterMatch(index, child) != index) {
       swap(index, child);
@@ -118,12 +122,12 @@ public class Heap<KEY extends Comparable, VALUE> {
   }
 
   private int getBetterMatch(int firstIndex, int secondIndex) {
-    if (firstIndex >= size) {
-      return secondIndex >= size ? -1 : secondIndex;
+    if (firstIndex > size || firstIndex == 0) {
+      return secondIndex > size || secondIndex == 0? -1 : secondIndex;
     }
 
-    if (secondIndex >= size) {
-      return firstIndex >= size ? -1 : firstIndex;
+    if (secondIndex > size || secondIndex == 0) {
+      return firstIndex > size  || firstIndex == 0? -1 : firstIndex;
     }
 
     HeapEntry first = data[firstIndex];
@@ -145,7 +149,7 @@ public class Heap<KEY extends Comparable, VALUE> {
   }
 
   private void doubleArray() {
-
+    data = Arrays.copyOf(data, data.length * 2);
   }
 
   public static class HeapEntry<KEY extends Comparable, VALUE> {
@@ -187,11 +191,8 @@ public class Heap<KEY extends Comparable, VALUE> {
       if (!key.equals(heapEntry.key)) {
         return false;
       }
-      if (!value.equals(heapEntry.value)) {
-        return false;
-      }
+      return value.equals(heapEntry.value);
 
-      return true;
     }
 
     @Override

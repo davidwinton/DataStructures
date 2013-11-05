@@ -31,6 +31,7 @@ public class SortingTests {
     for(int i = 0; i < 100000; i ++) {
       toSort.add((Math.random() - .5) * 10000000d);
     }
+    evaluator(toSort);
   }
 
   @Test
@@ -39,6 +40,7 @@ public class SortingTests {
     for(int i = 0; i < 5; i ++) {
       toSort.add(12);
     }
+    evaluator(toSort);
   }
 
   private <T extends Comparable<? super T>> void evaluator(List<T> input) {
